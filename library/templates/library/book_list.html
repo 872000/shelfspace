@@ -1,0 +1,23 @@
+{% extends "library/base.html" %}
+{% block title %}Books — ShelfSpace{% endblock %}
+{% block content %}
+<h1>Books</h1>
+<p><a class="btn" href="{% url 'library:book_add' %}">Add book</a>
+   <a class="btn gold" href="{% url 'library:book_add_isbn' %}">Add by ISBN</a></p>
+<p>
+  Filter:
+  <a href="{% url 'library:book_list' %}">all</a> |
+  <a href="?status=to_read">to read</a> |
+  <a href="?status=reading">reading</a> |
+  <a href="?status=finished">finished</a>
+</p>
+{% for b in books %}
+<div class="card">
+  <strong><a href="{% url 'library:book_detail' b.pk %}">{{ b.title }}</a></strong>
+  {% if b.author %} by {{ b.author }}{% endif %}
+  <span class="tag">{{ b.get_status_display }}</span>
+  {% if b.pages %}<span class="tag">{{ b.pages }} pages</span>{% endif %}
+  {% if not b.is_available %}<span class="tag">lent out</span>{% endif %}
+</div>
+{% empty %}<div class="card"><p>No books here yet.</p></div>{% endfor %}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "library/base.html" %}
+{% block title %}Loans — ShelfSpace{% endblock %}
+{% block content %}
+<h1>Loans</h1>
+{% if overdue %}
+<h2>Overdue</h2>
+{% for loan in overdue %}
+<div class="card">
+  <strong>{{ loan.book.title }}</strong> — {{ loan.friend_name }}
+  <span class="tag overdue">due {{ loan.due_at }}</span>
+  <a class="btn" href="{% url 'library:loan_return' loan.pk %}">Mark returned</a>
+</div>
+{% endfor %}
+{% endif %}
+<h2>Currently lent out</h2>
+{% for loan in active %}
+<div class="card">
+  <strong>{{ loan.book.title }}</strong> — {{ loan.friend_name }}
+  <span class="tag">due {{ loan.due_at }}</span>
+  <a class="btn" href="{% url 'library:loan_return' loan.pk %}">Mark returned</a>
+</div>
+{% empty %}<div class="card"><p>Nothing lent out right now.</p></div>{% endfor %}
+<h2>Returned</h2>
+{% for loan in returned %}
+<div class="card">
+  <strong>{{ loan.book.title }}</strong> — {{ loan.friend_name }}
+  <span class="tag">returned {{ loan.returned_at }}</span>
+</div>
+{% empty %}<div class="card"><p>No returns yet.</p></div>{% endfor %}
+{% endblock %}

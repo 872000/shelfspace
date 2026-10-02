@@ -1,0 +1,14 @@
+{% extends "library/base.html" %}
+{% block title %}Add by ISBN — ShelfSpace{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Add by ISBN — 100% offline</h1>
+  <p>The ISBN is looked up in a bundled catalog ({{ catalog_size }} titles) right
+     on this machine — no network calls, no API keys. If the ISBN isn't in the
+     catalog, you'll add the book manually.</p>
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn gold" type="submit">Look up</button>
+  </form>
+</div>
+{% endblock %}

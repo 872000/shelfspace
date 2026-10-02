@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ShelfSpace{% endblock %}</title>
+  <style>
+    :root { --green:#1e5c46; --gold:#e8a93d; --bg:#f7f4ec; --ink:#22302a; }
+    body { font-family: system-ui, sans-serif; background:var(--bg); color:var(--ink);
+           margin:0; line-height:1.5; }
+    header { background:var(--green); color:#fff; padding:1rem 2rem; }
+    header a { color:#fff; margin-right:1.2rem; text-decoration:none; font-weight:600; }
+    header a.brand { font-size:1.3rem; }
+    main { max-width:900px; margin:2rem auto; padding:0 1.5rem; }
+    .card { background:#fff; border-radius:10px; padding:1.2rem 1.5rem;
+            margin-bottom:1rem; box-shadow:0 2px 6px rgba(0,0,0,.08); }
+    .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1rem; }
+    .stat { background:#fff; border-radius:10px; padding:1rem; text-align:center;
+            box-shadow:0 2px 6px rgba(0,0,0,.08); }
+    .stat .num { font-size:2rem; font-weight:700; color:var(--green); }
+    .btn { display:inline-block; background:var(--green); color:#fff; border:none;
+           border-radius:8px; padding:.55rem 1.1rem; cursor:pointer;
+           text-decoration:none; font-weight:600; }
+    .btn.gold { background:var(--gold); color:#22302a; }
+    .messages p { background:#dff3e3; border-radius:8px; padding:.6rem 1rem; }
+    .messages p.warning { background:#ffe9c2; }
+    form p { margin:.7rem 0; } label { font-weight:600; display:block; }
+    input, textarea, select { width:100%; max-width:480px; padding:.5rem;
+      border:1px solid #bbb; border-radius:6px; }
+    .tag { display:inline-block; background:#e6efe9; border-radius:12px;
+           padding:.15rem .7rem; margin:.15rem .2rem; font-size:.85rem; }
+    .tag.overdue { background:#ffd9d9; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { text-align:left; padding:.5rem; border-bottom:1px solid #ddd; }
+    .flame { color:var(--gold); font-weight:700; }
+  </style>
+</head>
+<body>
+<header>
+  <a class="brand" href="{% url 'library:dashboard' %}">ShelfSpace</a>
+  <a href="{% url 'library:book_list' %}">Books</a>
+  <a href="{% url 'library:loan_list' %}">Loans</a>
+  <a href="{% url 'library:log_list' %}">Reading log</a>
+  <a href="/api/">API</a>
+</header>
+<main>
+  {% if messages %}<div class="messages">{% for m in messages %}<p{% if m.tags %} class="{{ m.tags }}"{% endif %}>{{ m }}</p>{% endfor %}</div>{% endif %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

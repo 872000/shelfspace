@@ -1,0 +1,11 @@
+{% extends "library/base.html" %}
+{% block title %}Reading log — ShelfSpace{% endblock %}
+{% block content %}
+<h1>Reading log</h1>
+{% for log in logs %}
+<div class="card">
+  <strong>{{ log.date }}</strong> — {{ log.pages }} pages
+  {% if log.book %}(<a href="{% url 'library:book_detail' log.book.pk %}">{{ log.book.title }}</a>){% endif %}
+</div>
+{% empty %}<div class="card"><p>No reading logged yet.</p></div>{% endfor %}
+{% endblock %}

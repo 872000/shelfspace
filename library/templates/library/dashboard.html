@@ -1,0 +1,36 @@
+{% extends "library/base.html" %}
+{% block title %}Dashboard — ShelfSpace{% endblock %}
+{% block content %}
+<h1>Your library at a glance</h1>
+<div class="stats">
+  <div class="stat"><div class="num">{{ summary.total_books }}</div><div>books</div></div>
+  <div class="stat"><div class="num">{{ summary.books_finished_this_month }}</div><div>finished this month</div></div>
+  <div class="stat"><div class="num">{{ summary.total_pages_read }}</div><div>pages read</div></div>
+  <div class="stat"><div class="num flame">{{ summary.current_streak_days }}</div><div>day streak</div></div>
+  <div class="stat"><div class="num">{{ summary.books_lent_out }}</div><div>lent out</div></div>
+  <div class="stat"><div class="num">{{ summary.overdue_loans }}</div><div>overdue</div></div>
+</div>
+<p style="margin-top:1rem">
+  <a class="btn" href="{% url 'library:book_add' %}">Add a book</a>
+  <a class="btn gold" href="{% url 'library:book_add_isbn' %}">Add by ISBN (offline)</a>
+</p>
+{% if overdue %}
+<h2>Overdue returns</h2>
+{% for loan in overdue %}
+<div class="card">
+  <strong>{{ loan.book.title }}</strong> — lent to {{ loan.friend_name }}
+  <span class="tag overdue">due {{ loan.due_at }}</span>
+  <a class="btn" href="{% url 'library:loan_return' loan.pk %}">Mark returned</a>
+</div>
+{% endfor %}
+{% endif %}
+<h2>Recently added</h2>
+{% for b in recent_books %}
+<div class="card">
+  <strong><a href="{% url 'library:book_detail' b.pk %}">{{ b.title }}</a></strong>
+  {% if b.author %} by {{ b.author }}{% endif %}
+  <span class="tag">{{ b.get_status_display }}</span>
+  {% if not b.is_available %}<span class="tag">lent out</span>{% endif %}
+</div>
+{% empty %}<div class="card"><p>No books yet — add your first one above.</p></div>{% endfor %}
+{% endblock %}
