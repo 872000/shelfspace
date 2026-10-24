@@ -7,6 +7,7 @@ from .models import Book, Loan, ReadingLog
 
 
 def books_finished_this_month(today: date | None = None) -> int:
+    """How many books were finished in the month containing `today`."""
     today = today or date.today()
     return Book.objects.filter(
         status=Book.Status.FINISHED,
@@ -34,6 +35,7 @@ def books_finished_by_month(months: int = 6, today: date | None = None) -> list[
 
 
 def total_pages_read() -> int:
+    """Total pages across all reading logs (0 when nothing is logged yet)."""
     return ReadingLog.objects.aggregate(total=Sum("pages"))["total"] or 0
 
 
@@ -51,11 +53,13 @@ def current_streak(today: date | None = None) -> int:
 
 
 def overdue_loans(today: date | None = None):
+    """Unreturned loans whose due date has passed as of `today`."""
     today = today or date.today()
     return Loan.objects.filter(returned_at__isnull=True, due_at__lt=today)
 
 
 def summary(today: date | None = None) -> dict:
+    """Dashboard snapshot: totals, streak, loans, and monthly finish counts."""
     today = today or date.today()
     return {
         "total_books": Book.objects.count(),
